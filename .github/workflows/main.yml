@@ -122,6 +122,8 @@ jobs:
         cd ../
         make core-android-arm
         make core-android-arm64
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Check release version
       id: checkReleaseVersion
