@@ -89,14 +89,11 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: Setup Android NDK
+    - name: Set up Android NDK
       id: setup-ndk
-      uses:  ravinderjangra/android-ndk-toolchain-setup@0.2
+      uses: nttld/setup-ndk@v1.0.6
       with:
-        api: '28'
-        arch: 'arm64'
-        install-location: 'toolchains'
-        force: true
+        ndk-version: r24-rc1
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
@@ -112,6 +109,7 @@ jobs:
     - name: build frida for Android
       shell: bash
       run: |
+        export ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
         git config --global user.name 'Your Name'
         git config --global user.email 'you@example.com'
         git clone https://github.com/guanyu7778/mystrong-frida
