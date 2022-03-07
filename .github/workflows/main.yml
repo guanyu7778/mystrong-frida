@@ -115,7 +115,6 @@ jobs:
         git config --global user.name 'Your Name'
         git config --global user.email 'you@example.com'
         git clone https://github.com/guanyu7778/mystrong-frida
-        export ANDROID_NDK_ROOT='toolchains'
         git clone --recurse-submodules https://github.com/frida/frida
         cd frida/frida-core
         git am ../../mystrong-frida/frida-core/*.patch
