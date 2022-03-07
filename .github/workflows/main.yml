@@ -106,7 +106,7 @@ jobs:
         sudo wget https://dl.google.com/android/repository/android-ndk-r24-rc1-linux.zip
         unzip android-ndk-r24-rc1-linux.zip
         ls
-        export ANDROID_NDK_ROOT=./android-ndk-r24-beta3
+        export ANDROID_NDK_ROOT=/home/runner/work/mystrong-frida/android-ndk-r24-beta3
         git config --global user.name 'Your Name'
         git config --global user.email 'you@example.com'
         git clone https://github.com/guanyu7778/mystrong-frida
