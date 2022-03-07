@@ -112,6 +112,8 @@ jobs:
     - name: build frida for Android
       shell: bash
       run: |
+        cd ./android-ndk-r24-rc1-linux
+        ls
         export ANDROID_NDK_ROOT=./android-ndk-r24-rc1-linux
         git config --global user.name 'Your Name'
         git config --global user.email 'you@example.com'
