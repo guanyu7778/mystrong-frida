@@ -111,16 +111,14 @@ jobs:
       run: |
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
-        git clone https://github.com/xmhwws/strongR-frida.git
+        git clone https://github.com/guanyu7778/mystrong-frida.git
         export ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
         git clone --recurse-submodules https://github.com/frida/frida
         cd frida/frida-core
-        git am ../../strongR-frida/frida-core/*.patch
+        git am ../../mystrong-frida/frida-core/*.patch
         cd ../
         make core-android-arm
         make core-android-arm64
-        make core-android-x86
-        make core-android-x86_64
         
     - name: Check release version
       id: checkReleaseVersion
@@ -165,23 +163,23 @@ jobs:
         asset_path: '${{ github.workspace }}/frida/build/frida-android-arm64/bin/frida-server'
         asset_name: 'hluda-server-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm64'
         asset_content_type: application/octet-stream
-    
-    - name: Upload android x86 frida-server for strongR-frida
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: '${{ steps.checkReleaseVersion.outputs.upload_url }}'
-        asset_path: '${{ github.workspace }}/frida/build/frida-android-x86/bin/frida-server'
-        asset_name: 'hluda-server-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-x86'
-        asset_content_type: application/octet-stream
         
-    - name: Upload android x86_64 frida-server for strongR-frida
+    - name: Upload android arm64 frida-gadget for strongR-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: '${{ steps.checkReleaseVersion.outputs.upload_url }}'
-        asset_path: '${{ github.workspace }}/frida/build/frida-android-x86_64/bin/frida-server'
-        asset_name: 'hluda-server-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-x86_64'
+        asset_path: '${{ github.workspace }}/frida/build/frida-android-arm64/lib/frida-gadget.so'
+        asset_name: 'yqfin-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm64'
+        asset_content_type: application/octet-stream
+      
+    - name: Upload android arm frida-gadget for strongR-frida
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: '${{ steps.checkReleaseVersion.outputs.upload_url }}'
+        asset_path: '${{ github.workspace }}/frida/build/frida-android-arm/lib/frida-gadget.so'
+        asset_name: 'yqfin-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm'
         asset_content_type: application/octet-stream
