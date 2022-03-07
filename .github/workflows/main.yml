@@ -90,7 +90,7 @@ jobs:
         java-version: 1.8
 
     - name: Install NDK
-      run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install 'ndk;24.0.8079956-rc1'
+      run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install 'ndk;24.0.8079956'
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
