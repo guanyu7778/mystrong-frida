@@ -91,9 +91,12 @@ jobs:
 
     - name: Setup Android NDK
       id: setup-ndk
-      uses: nttld/setup-ndk@v1.0.6
+      uses:  ravinderjangra/android-ndk-toolchain-setup@0.2
       with:
-        ndk-version: r24
+        api: '24'
+        arch: 'arm64'
+        install-location: 'toolchains'
+        force: true
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
