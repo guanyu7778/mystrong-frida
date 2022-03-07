@@ -96,7 +96,7 @@ jobs:
     - name: Install NDK r24
       uses: montudor/action-zip@v1
       with:
-        args: unzip -qq android-ndk-r24-rc1-linux.zip -d android-ndk-r24-rc1-linux
+        args: unzip -qq android-ndk-r24-rc1-linux.zip -d /home/runner/work/mystrong-frida/android-ndk-r24-rc1-linux
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
@@ -112,7 +112,7 @@ jobs:
     - name: build frida for Android
       shell: bash
       run: |
-        export ANDROID_NDK_ROOT=./android-ndk-r24-rc1-linux/android-ndk-r24-beta3
+        export ANDROID_NDK_ROOT=/home/runner/work/mystrong-frida/android-ndk-r24-rc1-linux/android-ndk-r24-beta3
         git config --global user.name 'Your Name'
         git config --global user.email 'you@example.com'
         git clone https://github.com/guanyu7778/mystrong-frida
