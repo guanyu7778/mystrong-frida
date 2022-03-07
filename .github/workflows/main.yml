@@ -88,15 +88,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-        
-    - name: Download NDK r24
-      run: |
-        sudo wget https://dl.google.com/android/repository/android-ndk-r24-rc1-linux.zip
-    
-    - name: Install NDK r24
-      uses: montudor/action-zip@v1
-      with:
-        args: unzip -qq android-ndk-r24-rc1-linux.zip -d /home/runner/work/mystrong-frida/android-ndk-r24-rc1-linux
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
@@ -112,7 +103,10 @@ jobs:
     - name: build frida for Android
       shell: bash
       run: |
-        export ANDROID_NDK_ROOT=/home/runner/work/mystrong-frida/android-ndk-r24-rc1-linux/android-ndk-r24-beta3
+        sudo wget https://dl.google.com/android/repository/android-ndk-r24-rc1-linux.zip
+        unzip android-ndk-r24-rc1-linux.zip
+        ls
+        export ANDROID_NDK_ROOT=./android-ndk-r24-beta3
         git config --global user.name 'Your Name'
         git config --global user.email 'you@example.com'
         git clone https://github.com/guanyu7778/mystrong-frida
