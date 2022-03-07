@@ -112,10 +112,10 @@ jobs:
     - name: build frida for Android
       shell: bash
       run: |
-        git config --global user.email "157423346@qq.com"
-        git config --global user.name "guanyu7778"
-        git clone https://github.com/guanyu7778/mystrong-frida.git
-        export ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
+        git config --global user.name '${{ needs.release.outputs.user_name }}'
+        git config --global user.email '${{ needs.release.outputs.user_email }}'
+        git clone https://github.com/guanyu7778/mystrong-frida
+        export ANDROID_NDK_ROOT='toolchains'
         git clone --recurse-submodules https://github.com/frida/frida
         cd frida/frida-core
         git am ../../mystrong-frida/frida-core/*.patch
