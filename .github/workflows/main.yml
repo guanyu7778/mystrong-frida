@@ -1,4 +1,4 @@
-name: strongR-frida
+name: strong-frida
 
 on: 
   workflow_dispatch:
@@ -93,7 +93,7 @@ jobs:
       id: setup-ndk
       uses:  ravinderjangra/android-ndk-toolchain-setup@0.2
       with:
-        api: '24'
+        api: '28'
         arch: 'arm64'
         install-location: 'toolchains'
         force: true
