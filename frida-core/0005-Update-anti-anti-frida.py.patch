@@ -1,0 +1,33 @@
+From bd006145115612df5a539be628b8731e55bfce10 Mon Sep 17 00:00:00 2001
+From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
+Date: Tue, 8 Mar 2022 21:46:32 +0800
+Subject: [PATCH 5/5] Update anti-anti-frida.py
+
+---
+ src/anti-anti-frida.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
+index 91f4cc03..2f237749 100644
+--- a/src/anti-anti-frida.py
++++ b/src/anti-anti-frida.py
+@@ -10,12 +10,12 @@ if __name__ == "__main__":
+     print(f"[*] Patch `frida` to `{random_name}``")
+     try:
+         binary = lief.parse(input_file)
+-    except:
+-        binary = lief.ELF.parse(input_file)
++    except Exception as e:
++        print(str(e))
++        print(f"[*] Patch frida-agent: {input_file} failed")
+ 
+     if not binary:
+-        print(f"[*] Patch frida-agent: {input_file} failed")
+-        exit()
++        return
+ 
+     for symbol in binary.symbols:
+         if symbol.name == "frida_agent_main":
+-- 
+2.23.0.windows.1
+
