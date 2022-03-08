@@ -1,0 +1,37 @@
+From a8128381285836674a62e621aab212a4dc0d47eb Mon Sep 17 00:00:00 2001
+From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
+Date: Tue, 8 Mar 2022 23:15:03 +0800
+Subject: [PATCH 7/7] Update anti-anti-frida.py
+
+---
+ src/anti-anti-frida.py | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
+index 5a8cc509..f8579e08 100644
+--- a/src/anti-anti-frida.py
++++ b/src/anti-anti-frida.py
+@@ -8,16 +8,15 @@ if __name__ == "__main__":
+     print(f"[*] Patch frida-agent: {input_file}")
+     random_name = "".join(random.sample("ABCDEFGHIJKLMNO", 5))
+     print(f"[*] Patch `frida` to `{random_name}``")
+-    try:
+-        binary = lief.parse(input_file)
+-    except Exception as e:
+-        print(str(e))
+-        print(f"[*] Patch frida-agent: {input_file} failed")
++    binary = lief.parse(input_file)
++    os.system("cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/tmp-android-arm64/frida-core/src/frida-agent@emb;ls")
+ 
+     if not binary:
++        print(f"[*] Patch frida-agent: {input_file} failed")
+         exit()
+ 
+     for symbol in binary.symbols:
++        print(symbol.name)
+         if symbol.name == "frida_agent_main":
+             symbol.name = "main"
+         if "frida" in symbol.name:
+-- 
+2.23.0.windows.1
+

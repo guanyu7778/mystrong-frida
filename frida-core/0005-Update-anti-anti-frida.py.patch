@@ -1,7 +1,7 @@
 From bd006145115612df5a539be628b8731e55bfce10 Mon Sep 17 00:00:00 2001
 From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
 Date: Tue, 8 Mar 2022 21:46:32 +0800
-Subject: [PATCH 5/6] Update anti-anti-frida.py
+Subject: [PATCH 5/7] Update anti-anti-frida.py
 
 ---
  src/anti-anti-frida.py | 8 ++++----
