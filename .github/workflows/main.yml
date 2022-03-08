@@ -115,18 +115,6 @@ jobs:
         cd ../
         make core-android-arm
         make core-android-arm64
-        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm64/lib/frida/64
-        pwd
-        ls
-        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm/lib/frida/32
-        pwd
-        ls
-        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm/
-        pwd
-        ls
-        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm64/
-        pwd
-        ls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
@@ -180,7 +168,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: '${{ steps.checkReleaseVersion.outputs.upload_url }}'
-        asset_path: '${{ github.workspace }}/frida/build/frida-android-arm64/lib/frida/frida-gadget.so'
+        asset_path: '${{ github.workspace }}/frida/build/frida-android-arm64/lib/frida/64/frida-gadget.so'
         asset_name: 'yqfin-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm64.so'
         asset_content_type: application/octet-stream
       
@@ -190,6 +178,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: '${{ steps.checkReleaseVersion.outputs.upload_url }}'
-        asset_path: '${{ github.workspace }}/frida/build/frida-android-arm/lib/frida/frida-gadget.so'
+        asset_path: '${{ github.workspace }}/frida/build/frida-android-arm/lib/frida/32/frida-gadget.so'
         asset_name: 'yqfin-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm.so'
         asset_content_type: application/octet-stream
