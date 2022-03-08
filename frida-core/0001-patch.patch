@@ -1,21 +1,69 @@
-From 2ca848b58ebcf36fda34c5eaba4fa85d2ad438c6 Mon Sep 17 00:00:00 2001
-From: hluwa <hluwa888@gmail.com>
-Date: Mon, 16 Aug 2021 10:55:11 +0800
-Subject: [PATCH 5/8] strongR-frida: symbol_frida_agent_main
+From b1b9e2320460f8b24354ebee449210d9005e29b5 Mon Sep 17 00:00:00 2001
+From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
+Date: Tue, 8 Mar 2022 13:47:57 +0800
+Subject: [PATCH] patch
 
 ---
+ lib/base/rpc.vala                     |  6 ++---
+ server/server.vala                    |  2 +-
  src/agent-container.vala              |  2 +-
- src/anti-anti-frida.py                | 27 +++++++++++++++++++++++++++
+ src/anti-anti-frida.py                | 37 +++++++++++++++++++++++++++
  src/darwin/darwin-host-session.vala   |  2 +-
- src/embed-agent.sh                    |  9 +++++++++
- src/linux/linux-host-session.vala     |  2 +-
+ src/droidy/droidy-client.vala         |  2 +-
+ src/embed-agent.sh                    |  8 +++++-
+ src/linux/frida-helper-backend-glue.c |  2 +-
+ src/linux/linux-host-session.vala     |  9 ++++---
  src/qnx/qnx-host-session.vala         |  2 +-
  src/windows/windows-host-session.vala |  2 +-
  tests/test-agent.vala                 |  2 +-
  tests/test-injector.vala              |  2 +-
- 9 files changed, 43 insertions(+), 7 deletions(-)
+ 13 files changed, 61 insertions(+), 17 deletions(-)
  create mode 100644 src/anti-anti-frida.py
 
+diff --git a/lib/base/rpc.vala b/lib/base/rpc.vala
+index 3695ba8c..02602abf 100644
+--- a/lib/base/rpc.vala
++++ b/lib/base/rpc.vala
+@@ -17,7 +17,7 @@ namespace Frida {
+ 			var request = new Json.Builder ();
+ 			request
+ 				.begin_array ()
+-				.add_string_value ("frida:rpc")
++				.add_string_value ((string) GLib.Base64.decode("ZnJpZGE6cnBj="))
+ 				.add_string_value (request_id)
+ 				.add_string_value ("call")
+ 				.add_string_value (method)
+@@ -70,7 +70,7 @@ namespace Frida {
+ 		}
+ 
+ 		public bool try_handle_message (string json) {
+-			if (json.index_of ("\"frida:rpc\"") == -1)
++			if (json.index_of ((string) GLib.Base64.decode("ImZyaWRhOnJwYyI=")) == -1)
+ 				return false;
+ 
+ 			var parser = new Json.Parser ();
+@@ -99,7 +99,7 @@ namespace Frida {
+ 				return false;
+ 
+ 			string? type = rpc_message.get_element (0).get_string ();
+-			if (type == null || type != "frida:rpc")
++			if (type == null || type != (string) GLib.Base64.decode("ZnJpZGE6cnBj="))
+ 				return false;
+ 
+ 			var request_id_value = rpc_message.get_element (1);
+diff --git a/server/server.vala b/server/server.vala
+index e2d1b66d..0f498b1e 100644
+--- a/server/server.vala
++++ b/server/server.vala
+@@ -1,7 +1,7 @@
+ namespace Frida.Server {
+ 	private static Application application;
+ 
+-	private const string DEFAULT_DIRECTORY = "re.frida.server";
++	private static string DEFAULT_DIRECTORY = null;
+ 	private static bool output_version = false;
+ 	private static string? listen_address = null;
+ 	private static string? certpath = null;
 diff --git a/src/agent-container.vala b/src/agent-container.vala
 index 256e5ed7..83f6a3e8 100644
 --- a/src/agent-container.vala
@@ -31,10 +79,10 @@ index 256e5ed7..83f6a3e8 100644
  
 diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
 new file mode 100644
-index 00000000..d30168d6
+index 00000000..78796329
 --- /dev/null
 +++ b/src/anti-anti-frida.py
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,37 @@
 +import lief
 +import sys
 +import random
@@ -54,16 +102,26 @@ index 00000000..d30168d6
 +    for symbol in binary.symbols:
 +        if symbol.name == "frida_agent_main":
 +            symbol.name = "main"
-+        
 +        if "frida" in symbol.name:
 +            symbol.name = symbol.name.replace("frida", random_name)
-+
 +        if "FRIDA" in symbol.name:
 +            symbol.name = symbol.name.replace("FRIDA", random_name)
++        if "Frida" in symbol.name:
++            symbol.name = symbol.name.replace("Frida", random_name)
 +
 +    binary.write(input_file)
++    
++    # gum-js-loop thread
++    random_name = "".join(random.sample("abcdefghijklmn", 11))
++    print(f"[*] Patch `gum-js-loop` to `{random_name}`")
++    os.system(f"sed -i 's/gum-js-loop/{random_name}/g' {input_file}")
++    
++    # gmain thread
++    random_name = "".join(random.sample("abcdefghijklmn", 5))
++    print(f"[*] Patch `gmain` to `{random_name}`")
++    os.system(f"sed -i 's/gmain/{random_name}/g' {input_file}")
 diff --git a/src/darwin/darwin-host-session.vala b/src/darwin/darwin-host-session.vala
-index 8f1336c5..0f6fae59 100644
+index bd754fd2..e620cee5 100644
 --- a/src/darwin/darwin-host-session.vala
 +++ b/src/darwin/darwin-host-session.vala
 @@ -332,7 +332,7 @@ namespace Frida {
@@ -75,8 +133,21 @@ index 8f1336c5..0f6fae59 100644
  #if HAVE_EMBEDDED_ASSETS
  			id = yield fruitjector.inject_library_resource (pid, agent, entrypoint, agent_parameters, cancellable);
  #else
+diff --git a/src/droidy/droidy-client.vala b/src/droidy/droidy-client.vala
+index 1bc1c58b..4083b630 100644
+--- a/src/droidy/droidy-client.vala
++++ b/src/droidy/droidy-client.vala
+@@ -998,7 +998,7 @@ namespace Frida.Droidy {
+ 						case "OPEN":
+ 						case "CLSE":
+ 						case "WRTE":
+-							throw new Error.PROTOCOL ("Unexpected command");
++							break;
+ 
+ 						default:
+ 							var length = parse_length (command_or_length);
 diff --git a/src/embed-agent.sh b/src/embed-agent.sh
-index 380e8a32..d07f4588 100755
+index dda8ba76..6b6f7dbf 100755
 --- a/src/embed-agent.sh
 +++ b/src/embed-agent.sh
 @@ -9,6 +9,7 @@ host_os="$6"
@@ -87,33 +158,62 @@ index 380e8a32..d07f4588 100755
  priv_dir="$output_dir/frida-agent@emb"
  
  case $host_os in
-@@ -30,6 +31,10 @@ collect_generic_agent ()
+@@ -30,6 +31,9 @@ collect_generic_agent ()
    else
      touch "$embedded_agent"
    fi
 +  if [ -f "$custom_script" ]; then
 +    python3 "$custom_script" "$embedded_agent"
 +  fi
-+  
    embedded_agents+=("$embedded_agent")
  }
  
-@@ -62,6 +67,10 @@ case $host_os in
+@@ -61,7 +65,9 @@ case $host_os in
+       echo "An agent must be provided"
        exit 1
      fi
- 
+-
 +    if [ -f "$custom_script" ]; then
-+      python3 "$custom_script" "$embedded_agent"
++        python3 "$custom_script" "$embedded_agent"
 +    fi
-+    
      exec "$resource_compiler" --toolchain=gnu -c "$resource_config" -o "$output_dir/frida-data-agent" "$embedded_agent"
      ;;
    *)
+diff --git a/src/linux/frida-helper-backend-glue.c b/src/linux/frida-helper-backend-glue.c
+index f8249a15..41807183 100644
+--- a/src/linux/frida-helper-backend-glue.c
++++ b/src/linux/frida-helper-backend-glue.c
+@@ -961,7 +961,7 @@ frida_inject_instance_init_fifo (FridaInjectInstance * self)
+ {
+   const int mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
+ 
+-  self->fifo_path = g_strdup_printf ("%s/linjector-%u", self->temp_path, self->id);
++  self->fifo_path = g_strdup_printf ("%s/%p%u", self->temp_path, self ,self->id);
+ 
+   mkfifo (self->fifo_path, mode);
+   chmod (self->fifo_path, mode);
 diff --git a/src/linux/linux-host-session.vala b/src/linux/linux-host-session.vala
-index 059e75a9..1221de64 100644
+index 1aacc0aa..990ddbd5 100644
 --- a/src/linux/linux-host-session.vala
 +++ b/src/linux/linux-host-session.vala
-@@ -422,7 +422,7 @@ namespace Frida {
+@@ -128,12 +128,13 @@ namespace Frida {
+ 			var blob64 = Frida.Data.Agent.get_frida_agent_64_so_blob ();
+ 			var emulated_arm = Frida.Data.Agent.get_frida_agent_arm_so_blob ();
+ 			var emulated_arm64 = Frida.Data.Agent.get_frida_agent_arm64_so_blob ();
+-			agent = new AgentDescriptor (PathTemplate ("frida-agent-<arch>.so"),
++			var random_prefix = GLib.Uuid.string_random();
++			agent = new AgentDescriptor (PathTemplate (random_prefix + "-<arch>.so"),
+ 				new Bytes.static (blob32.data),
+ 				new Bytes.static (blob64.data),
+ 				new AgentResource[] {
+-					new AgentResource ("frida-agent-arm.so", new Bytes.static (emulated_arm.data), tempdir),
+-					new AgentResource ("frida-agent-arm64.so", new Bytes.static (emulated_arm64.data), tempdir),
++					new AgentResource (random_prefix + "-arm.so", new Bytes.static (emulated_arm.data), tempdir),
++					new AgentResource (random_prefix + "-arm64.so", new Bytes.static (emulated_arm64.data), tempdir),
+ 				},
+ 				AgentMode.INSTANCED,
+ 				tempdir);
+@@ -421,7 +422,7 @@ namespace Frida {
  			var stream_request = Pipe.open (t.local_address, cancellable);
  
  			uint id;
@@ -175,5 +275,5 @@ index 81df3e16..e4fb6730 100644
  				printerr ("\nFAIL: %s\n\n", e.message);
  				assert_not_reached ();
 -- 
-2.30.2
+2.23.0.windows.1
 
