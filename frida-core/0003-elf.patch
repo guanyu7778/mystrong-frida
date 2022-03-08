@@ -1,0 +1,72 @@
+From 888c763730d50383bdfaabe48fb4864a31b04582 Mon Sep 17 00:00:00 2001
+From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
+Date: Tue, 8 Mar 2022 19:22:22 +0800
+Subject: [PATCH 3/3] elf
+
+---
+ lib/payload/portal-client.vala |  2 +-
+ src/anti-anti-frida.py         | 11 +++++++----
+ src/frida-glue.c               |  2 +-
+ 3 files changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/lib/payload/portal-client.vala b/lib/payload/portal-client.vala
+index 1765345d..579107b2 100644
+--- a/lib/payload/portal-client.vala
++++ b/lib/payload/portal-client.vala
+@@ -275,7 +275,7 @@ namespace Frida {
+ 			var opts = SessionOptions._deserialize (options);
+ 
+ 			if (opts.realm == EMULATED)
+-				throw new Error.NOT_SUPPORTED ("Emulated realm is not supported by frida-gadget");
++				throw new Error.NOT_SUPPORTED ("not supported by yqfin");
+ 
+ 			AgentMessageSink sink;
+ 			try {
+diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
+index 9ccc69bc..119b0a17 100644
+--- a/src/anti-anti-frida.py
++++ b/src/anti-anti-frida.py
+@@ -8,10 +8,13 @@ if __name__ == "__main__":
+     print(f"[*] Patch frida-agent: {input_file}")
+     random_name = "".join(random.sample("ABCDEFGHIJKLMNO", 5))
+     print(f"[*] Patch `frida` to `{random_name}``")
+-
+-    binary = lief.parse(input_file)
++    try
++        binary = lief.parse(input_file)
++    except
++        binary = lief.ELF.parse(input_file)
+ 
+     if not binary:
++        print(f"[*] Patch frida-agent: {input_file} failed")
+         exit()
+ 
+     for symbol in binary.symbols:
+@@ -27,9 +30,9 @@ if __name__ == "__main__":
+     # gum-js-loop thread
+     random_name = "".join(random.sample("abcdefghijklmn", 11))
+     print(f"[*] Patch `gum-js-loop` to `{random_name}`")
+-    os.system(f"sed -i 's/gum-js-loop/{random_name}/g' {input_file}")
++    os.system(f"sed -i s/gum-js-loop/{random_name}/g {input_file}")
+     
+     # gmain thread
+     random_name = "".join(random.sample("abcdefghijklmn", 5))
+     print(f"[*] Patch `gmain` to `{random_name}`")
+-    os.system(f"sed -i 's/gmain/{random_name}/g' {input_file}")
++    os.system(f"sed -i s/gmain/{random_name}/g {input_file}")
+diff --git a/src/frida-glue.c b/src/frida-glue.c
+index 13429703..674634cc 100644
+--- a/src/frida-glue.c
++++ b/src/frida-glue.c
+@@ -46,7 +46,7 @@ frida_init_with_runtime (FridaRuntime rt)
+     {
+       main_context = g_main_context_ref (g_main_context_default ());
+       main_loop = g_main_loop_new (main_context, FALSE);
+-      main_thread = g_thread_new ("frida-main-loop", run_main_loop, NULL);
++      main_thread = g_thread_new ("main-loop", run_main_loop, NULL);
+     }
+ 
+     g_once_init_leave (&frida_initialized, TRUE);
+-- 
+2.23.0.windows.1
+

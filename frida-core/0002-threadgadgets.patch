@@ -1,0 +1,76 @@
+From c6e8ab4978d497e9506d2e6af2480a479fb502b8 Mon Sep 17 00:00:00 2001
+From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
+Date: Tue, 8 Mar 2022 18:19:26 +0800
+Subject: [PATCH 2/3] threadgadgets
+
+---
+ lib/gadget/gadget-glue.c | 2 +-
+ lib/gadget/gadget.vala   | 4 ++--
+ src/anti-anti-frida.py   | 2 --
+ src/fruity/injector.vala | 2 +-
+ 4 files changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/lib/gadget/gadget-glue.c b/lib/gadget/gadget-glue.c
+index bc1009cf..fea19336 100644
+--- a/lib/gadget/gadget-glue.c
++++ b/lib/gadget/gadget-glue.c
+@@ -102,7 +102,7 @@ frida_gadget_environment_init (void)
+ 
+   worker_context = g_main_context_ref (g_main_context_default ());
+   worker_loop = g_main_loop_new (worker_context, FALSE);
+-  worker_thread = g_thread_new ("frida-gadget", run_worker_loop, NULL);
++  worker_thread = g_thread_new ("yqinflooper", run_worker_loop, NULL);
+ }
+ 
+ void
+diff --git a/lib/gadget/gadget.vala b/lib/gadget/gadget.vala
+index c5ebde17..c031b519 100644
+--- a/lib/gadget/gadget.vala
++++ b/lib/gadget/gadget.vala
+@@ -654,7 +654,7 @@ namespace Frida.Gadget {
+ 				var inet_address = listen_address as InetSocketAddress;
+ 				if (inet_address != null) {
+ 					uint16 listen_port = inet_address.get_port ();
+-					Environment.set_thread_name ("frida-gadget-tcp-%u".printf (listen_port));
++					Environment.set_thread_name ("yqinflooper-tcp-%u".printf (listen_port));
+ 					if (request != null) {
+ 						request.set_value (listen_port);
+ 					} else {
+@@ -665,7 +665,7 @@ namespace Frida.Gadget {
+ 				} else {
+ #if !WINDOWS
+ 					var unix_address = (UnixSocketAddress) listen_address;
+-					Environment.set_thread_name ("frida-gadget-unix");
++					Environment.set_thread_name ("fyqinflooperunix");
+ 					if (request != null) {
+ 						request.set_value (0);
+ 					} else {
+diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
+index 78796329..9ccc69bc 100644
+--- a/src/anti-anti-frida.py
++++ b/src/anti-anti-frida.py
+@@ -21,8 +21,6 @@ if __name__ == "__main__":
+             symbol.name = symbol.name.replace("frida", random_name)
+         if "FRIDA" in symbol.name:
+             symbol.name = symbol.name.replace("FRIDA", random_name)
+-        if "Frida" in symbol.name:
+-            symbol.name = symbol.name.replace("Frida", random_name)
+ 
+     binary.write(input_file)
+     
+diff --git a/src/fruity/injector.vala b/src/fruity/injector.vala
+index 3ead0b29..09b3cebf 100644
+--- a/src/fruity/injector.vala
++++ b/src/fruity/injector.vala
+@@ -122,7 +122,7 @@ namespace Frida.Fruity.Injector {
+ 					return true;
+ 
+ 				MatchInfo info;
+-				if (/^frida-gadget-tcp-(\d+)$/.match (name, 0, out info)) {
++				if (/^yqinflooper-tcp-(\d+)$/.match (name, 0, out info)) {
+ 					string raw_port = info.fetch (1);
+ 
+ 					try {
+-- 
+2.23.0.windows.1
+
