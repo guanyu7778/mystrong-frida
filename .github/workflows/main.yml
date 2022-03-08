@@ -103,6 +103,7 @@ jobs:
     - name: build frida for Android
       shell: bash
       run: |
+        pip install --upgrade lief
         sudo wget https://dl.google.com/android/repository/android-ndk-r24-rc1-linux.zip
         sudo unzip android-ndk-r24-rc1-linux.zip
         export ANDROID_NDK_ROOT=/home/runner/work/mystrong-frida/mystrong-frida/android-ndk-r24-beta3
