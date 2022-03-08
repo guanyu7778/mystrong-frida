@@ -115,6 +115,12 @@ jobs:
         cd ../
         make core-android-arm
         make core-android-arm64
+        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm64/bin
+        pwd
+        ls
+        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm64/lib
+        pwd
+        ls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
