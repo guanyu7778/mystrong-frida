@@ -115,10 +115,16 @@ jobs:
         cd ../
         make core-android-arm
         make core-android-arm64
-        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm64/lib/frida
+        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm64/lib/frida/64
         pwd
         ls
-        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm/lib/frida
+        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm/lib/frida/32
+        pwd
+        ls
+        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm/
+        pwd
+        ls
+        cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/frida-android-arm64/
         pwd
         ls
       env:
