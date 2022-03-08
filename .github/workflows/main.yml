@@ -169,7 +169,7 @@ jobs:
       with:
         upload_url: '${{ steps.checkReleaseVersion.outputs.upload_url }}'
         asset_path: '${{ github.workspace }}/frida/build/frida-android-arm64/lib/frida-gadget.so'
-        asset_name: 'yqfin-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm64'
+        asset_name: 'yqfin-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm64.so'
         asset_content_type: application/octet-stream
       
     - name: Upload android arm frida-gadget for strongR-frida
@@ -179,5 +179,5 @@ jobs:
       with:
         upload_url: '${{ steps.checkReleaseVersion.outputs.upload_url }}'
         asset_path: '${{ github.workspace }}/frida/build/frida-android-arm/lib/frida-gadget.so'
-        asset_name: 'yqfin-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm'
+        asset_name: 'yqfin-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm.so'
         asset_content_type: application/octet-stream
