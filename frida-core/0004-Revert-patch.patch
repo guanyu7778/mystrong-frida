@@ -1,0 +1,29 @@
+From d8d9fa72686f89459e443b4183ebbd9a33097111 Mon Sep 17 00:00:00 2001
+From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
+Date: Tue, 8 Mar 2022 21:29:57 +0800
+Subject: [PATCH 4/4] Revert "patch"
+
+This reverts commit b1b9e2320460f8b24354ebee449210d9005e29b5.
+---
+ src/anti-anti-frida.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
+index 119b0a17..91f4cc03 100644
+--- a/src/anti-anti-frida.py
++++ b/src/anti-anti-frida.py
+@@ -8,9 +8,9 @@ if __name__ == "__main__":
+     print(f"[*] Patch frida-agent: {input_file}")
+     random_name = "".join(random.sample("ABCDEFGHIJKLMNO", 5))
+     print(f"[*] Patch `frida` to `{random_name}``")
+-    try
++    try:
+         binary = lief.parse(input_file)
+-    except
++    except:
+         binary = lief.ELF.parse(input_file)
+ 
+     if not binary:
+-- 
+2.23.0.windows.1
+
