@@ -1,0 +1,39 @@
+From b69f8c4c4d2e63554a350662d0c3ec626215a8ac Mon Sep 17 00:00:00 2001
+From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
+Date: Wed, 9 Mar 2022 10:59:46 +0800
+Subject: [PATCH 9/9] fix
+
+---
+ src/anti-anti-frida.py | 1 -
+ src/embed-agent.sh     | 3 ---
+ 2 files changed, 4 deletions(-)
+
+diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
+index 946838ef..590a8a49 100644
+--- a/src/anti-anti-frida.py
++++ b/src/anti-anti-frida.py
+@@ -16,7 +16,6 @@ if __name__ == "__main__":
+         exit()
+ 
+     for symbol in binary.symbols:
+-        print(symbol.name)
+         if symbol.name == "frida_agent_main":
+             symbol.name = "main"
+         if "frida" in symbol.name:
+diff --git a/src/embed-agent.sh b/src/embed-agent.sh
+index 6b6f7dbf..94051932 100755
+--- a/src/embed-agent.sh
++++ b/src/embed-agent.sh
+@@ -65,9 +65,6 @@ case $host_os in
+       echo "An agent must be provided"
+       exit 1
+     fi
+-    if [ -f "$custom_script" ]; then
+-        python3 "$custom_script" "$embedded_agent"
+-    fi
+     exec "$resource_compiler" --toolchain=gnu -c "$resource_config" -o "$output_dir/frida-data-agent" "$embedded_agent"
+     ;;
+   *)
+-- 
+2.23.0.windows.1
+

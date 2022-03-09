@@ -1,7 +1,7 @@
 From b1b9e2320460f8b24354ebee449210d9005e29b5 Mon Sep 17 00:00:00 2001
 From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
 Date: Tue, 8 Mar 2022 13:47:57 +0800
-Subject: [PATCH 1/8] patch
+Subject: [PATCH 1/9] patch
 
 ---
  lib/base/rpc.vala                     |  6 ++---
