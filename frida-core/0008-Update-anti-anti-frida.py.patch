@@ -1,0 +1,27 @@
+From d3189894c1c94cf172a958bd37e1e313fe9be760 Mon Sep 17 00:00:00 2001
+From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
+Date: Wed, 9 Mar 2022 10:18:35 +0800
+Subject: [PATCH 8/8] Update anti-anti-frida.py
+
+---
+ src/anti-anti-frida.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
+index f8579e08..946838ef 100644
+--- a/src/anti-anti-frida.py
++++ b/src/anti-anti-frida.py
+@@ -9,9 +9,9 @@ if __name__ == "__main__":
+     random_name = "".join(random.sample("ABCDEFGHIJKLMNO", 5))
+     print(f"[*] Patch `frida` to `{random_name}``")
+     binary = lief.parse(input_file)
+-    os.system("cd /home/runner/work/mystrong-frida/mystrong-frida/frida/build/tmp-android-arm64/frida-core/src/frida-agent@emb;ls")
+ 
+     if not binary:
++        print(os.path.getsize(input_file))
+         print(f"[*] Patch frida-agent: {input_file} failed")
+         exit()
+ 
+-- 
+2.23.0.windows.1
+

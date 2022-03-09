@@ -1,7 +1,7 @@
 From c6e8ab4978d497e9506d2e6af2480a479fb502b8 Mon Sep 17 00:00:00 2001
 From: guanyu7778 <44391979+guanyu7778@users.noreply.github.com>
 Date: Tue, 8 Mar 2022 18:19:26 +0800
-Subject: [PATCH 2/7] threadgadgets
+Subject: [PATCH 2/8] threadgadgets
 
 ---
  lib/gadget/gadget-glue.c | 2 +-
